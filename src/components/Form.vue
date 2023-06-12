@@ -6,9 +6,7 @@
       </div>
       <div class="column">
         <div class="is-flex is-align-items-center is-justify-content-space-between">
-          <section>
-            <strong>{{ formatedTime }}</strong>
-          </section>
+          <StopWatch :seconds="seconds" />
           <button class="button" @click="initCount">
             <span class="icon">
               <i class="fas fa-play"></i>
@@ -30,20 +28,17 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+import StopWatch from './StopWatch.vue';
+
 export default defineComponent({
   name: 'FormSection',
+  components: {
+    StopWatch,
+  },
   data: () => ({
     seconds: 0,
     intervalId: 0,
   }),
-  computed: {
-    formatedTime(): string {
-      const timestamp = new Date(this.seconds * 1000);
-
-      return timestamp.toISOString()
-        .substr(11, 8);
-    },
-  },
   methods: {
     initCount() {
       this.intervalId = setInterval(() => {
