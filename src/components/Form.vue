@@ -5,21 +5,7 @@
         <input type="text" class="input" placeholder="Qual tarefa você deseja fazer?">
       </div>
       <div class="column">
-        <div class="is-flex is-align-items-center is-justify-content-space-between">
-          <StopWatch :seconds="seconds" />
-          <button class="button" @click="initCount">
-            <span class="icon">
-              <i class="fas fa-play"></i>
-            </span>
-            <span>play</span>
-          </button>
-          <button class="button" @click="finishCount">
-            <span class="icon">
-              <i class="fas fa-stop"></i>
-            </span>
-            <span>stop</span>
-          </button>
-        </div>
+        <TimerItem />
       </div>
     </div>
   </div>
@@ -28,26 +14,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import StopWatch from './StopWatch.vue';
+import TimerItem from './Timer.vue';
 
 export default defineComponent({
   name: 'FormSection',
   components: {
-    StopWatch,
-  },
-  data: () => ({
-    seconds: 0,
-    intervalId: 0,
-  }),
-  methods: {
-    initCount() {
-      this.intervalId = setInterval(() => {
-        this.seconds += 1;
-      }, 1000);
-    },
-    finishCount() {
-      clearInterval(this.intervalId);
-    },
+    TimerItem,
   },
 });
 </script>
