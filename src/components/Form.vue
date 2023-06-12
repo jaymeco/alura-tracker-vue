@@ -34,6 +34,7 @@ export default defineComponent({
   name: 'FormSection',
   data: () => ({
     seconds: 0,
+    intervalId: 0,
   }),
   computed: {
     formatedTime(): string {
@@ -45,12 +46,12 @@ export default defineComponent({
   },
   methods: {
     initCount() {
-      setInterval(() => {
+      this.intervalId = setInterval(() => {
         this.seconds += 1;
       }, 1000);
     },
     finishCount() {
-      console.log('Iniciando');
+      clearInterval(this.intervalId);
     },
   },
 });
