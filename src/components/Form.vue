@@ -14,6 +14,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+import Task from '@/interfaces/Task';
+
 import TimerItem from './Timer.vue';
 
 export default defineComponent({
@@ -21,12 +23,17 @@ export default defineComponent({
   components: {
     TimerItem,
   },
+  emits: ['onSubmit'],
   data: () => ({
     description: '',
   }),
   methods: {
     finishTask(time: number): void {
-      console.log(time);
+      const task: Task = {
+        time,
+        description: this.description,
+      };
+      this.$emit('onSubmit', task);
       this.description = '';
     }
   },
