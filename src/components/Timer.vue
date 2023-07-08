@@ -23,6 +23,7 @@ import StopWatch from './StopWatch.vue';
 
 export default defineComponent({
   name: 'TimerItem',
+  emits: ['onTimeFinish'],
   components: {
     StopWatch,
   },
@@ -41,6 +42,8 @@ export default defineComponent({
     finishCount() {
       clearInterval(this.intervalId);
       this.isCounting = !this.isCounting;
+      this.$emit('onTimeFinish', this.seconds);
+      this.seconds = 0;
     },
   },
 });
