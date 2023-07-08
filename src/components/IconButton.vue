@@ -12,11 +12,8 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'IconButton',
+  emits: ['action'],
   props: {
-    action: {
-      type: Function,
-      required: true,
-    },
     disabled: {
       type: Boolean,
       required: false,
@@ -32,8 +29,8 @@ export default defineComponent({
     },
   },
   methods: {
-    triggerAction() {
-      this.action();
+    triggerAction(): void {
+      this.$emit('action');
     }
   }
 });
