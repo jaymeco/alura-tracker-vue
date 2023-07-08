@@ -1,9 +1,9 @@
 <template>
-  <main class="columns is-gapless is-multline">
+  <main class="columns is-gapless is-multline" :class="{ 'dark-mode': isDarkMode }">
     <div class="column is-one-quarter">
-      <SideBar />
+      <SideBar @on-change-theme="switchTheme" />
     </div>
-    <div class="column is-three-quarter">
+    <div class="column is-three-quarter content">
       <FormSection @on-submit="saveTask" />
       <div class="taks-list">
         <BoxContainer v-if="isEmptyTasks">
@@ -35,6 +35,7 @@ export default defineComponent({
   },
   data: () => ({
     tasks: [] as Task[],
+    isDarkMode: false,
   }),
   computed: {
     isEmptyTasks() {
@@ -45,12 +46,29 @@ export default defineComponent({
     saveTask(task: Task) {
       this.tasks.push(task);
     },
+    switchTheme(darkMode: boolean) {
+      this.isDarkMode = darkMode;
+    }
   },
 });
 </script>
 
-<style scoped>
+<style>
 .taks-list {
   padding: 1.25em;
+}
+
+main {
+  --bg-primary: #f5f5f5;
+  --text-primary: #33333;
+}
+
+main.dark-mode {
+  --bg-primary: #2b2d42;
+  --text-primary: #ddd;
+}
+
+.content {
+  background-color: var(--bg-primary);
 }
 </style>
