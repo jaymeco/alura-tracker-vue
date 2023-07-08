@@ -6,7 +6,7 @@
     <div class="column is-three-quarter">
       <FormSection @on-submit="saveTask" />
       <div class="taks-list">
-        <TaskItem v-for="(task, index) in tasks" v-bind:key="index" :task="task"/>
+        <TaskItem v-for="(task, index) in tasks" v-bind:key="index" :task="task" v-bind:sequence="index + 1"/>
       </div>
     </div>
   </main>
