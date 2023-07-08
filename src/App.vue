@@ -6,7 +6,10 @@
     <div class="column is-three-quarter">
       <FormSection @on-submit="saveTask" />
       <div class="taks-list">
-        <TaskItem v-for="(task, index) in tasks" v-bind:key="index" :task="task" v-bind:sequence="index + 1"/>
+        <BoxContainer v-if="isEmptyTasks">
+          Você não possui nenhuma produção hoje :(
+        </BoxContainer>
+        <TaskItem v-for="(task, index) in tasks" v-bind:key="index" :task="task" v-bind:sequence="index + 1" />
       </div>
     </div>
   </main>
@@ -20,17 +23,24 @@ import Task from './interfaces/Task';
 import SideBar from '@/components/SideBar.vue';
 import FormSection from '@/components/Form.vue';
 import TaskItem from '@/components/TaskItem.vue';
+import BoxContainer from './components/BoxContainer.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
     SideBar,
     FormSection,
-    TaskItem
+    TaskItem,
+    BoxContainer
   },
   data: () => ({
     tasks: [] as Task[],
   }),
+  computed: {
+    isEmptyTasks() {
+      return this.tasks.length <= 0;
+    },
+  },
   methods: {
     saveTask(task: Task) {
       this.tasks.push(task);
