@@ -1,18 +1,8 @@
 <template>
   <div class="is-flex is-align-items-center is-justify-content-space-between">
     <StopWatch :seconds="seconds" />
-    <button class="button" @click="initCount" :disabled="isCounting">
-      <span class="icon">
-        <i class="fas fa-play"></i>
-      </span>
-      <span>play</span>
-    </button>
-    <button class="button" @click="finishCount" :disabled="!isCounting">
-      <span class="icon">
-        <i class="fas fa-stop"></i>
-      </span>
-      <span>stop</span>
-    </button>
+    <IconButton :disabled="isCounting" @action="initCount" label="Play" icon-name="fa-play" />
+    <IconButton :disabled="!isCounting" @action="finishCount" label="Stop" icon-name="fa-stop" />
   </div>
 </template>
 
@@ -20,12 +10,14 @@
 import { defineComponent } from 'vue';
 
 import StopWatch from './StopWatch.vue';
+import IconButton from './IconButton.vue';  
 
 export default defineComponent({
   name: 'TimerItem',
   emits: ['onTimeFinish'],
   components: {
     StopWatch,
+    IconButton,
   },
   data: () => ({
     seconds: 0,
