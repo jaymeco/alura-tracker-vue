@@ -2,23 +2,32 @@
   <div class="box has-text-weight-bold">
     <div class="columns">
       <div class="column is-7">
-        Descrição da tarefa
+        {{ task.description }}
       </div>
       <div class="column">
-        <StopWatch :seconds="15" />
+        <StopWatch v-bind:seconds="task.time" />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
+
+import Task from '@/interfaces/Task';
+
 import StopWatch from './StopWatch.vue';
 
 export default defineComponent({
   name: 'TaskItem',
   components: {
     StopWatch,
+  },
+  props: {
+    task: {
+      type: Object as PropType<Task>,
+      required: true,
+    }
   },
 })
 </script>
