@@ -1,5 +1,5 @@
 <template>
-  <div class="box has-text-weight-bold">
+  <BoxContainer>
     <div class="columns">
       <div class="column is-7">
         {{ task.description || `Tarefa de N° ${sequence}` }}
@@ -8,7 +8,7 @@
         <StopWatch v-bind:seconds="task.time" />
       </div>
     </div>
-  </div>
+  </BoxContainer>
 </template>
 
 <script lang="ts">
@@ -17,11 +17,13 @@ import { defineComponent, PropType } from 'vue';
 import Task from '@/interfaces/Task';
 
 import StopWatch from './StopWatch.vue';
+import BoxContainer from './BoxContainer.vue';
 
 export default defineComponent({
   name: 'TaskItem',
   components: {
     StopWatch,
+    BoxContainer
   },
   props: {
     task: {
@@ -36,8 +38,4 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-.box {
-  background-color: #FAF0CA;
-}
-</style>
+<style scoped></style>
