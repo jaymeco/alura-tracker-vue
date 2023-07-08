@@ -2,7 +2,7 @@
   <div class="box has-text-weight-bold">
     <div class="columns">
       <div class="column is-7">
-        {{ task.description }}
+        {{ task.description || `Tarefa de N° ${sequence}` }}
       </div>
       <div class="column">
         <StopWatch v-bind:seconds="task.time" />
@@ -27,7 +27,11 @@ export default defineComponent({
     task: {
       type: Object as PropType<Task>,
       required: true,
-    }
+    },
+    sequence: {
+      type: Number,
+      required: true,
+    },
   },
 })
 </script>
