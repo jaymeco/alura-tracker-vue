@@ -9,7 +9,7 @@
         <BoxContainer v-if="isEmptyTasks">
           Você não possui nenhuma produção hoje :(
         </BoxContainer>
-        <TaskItem v-for="(task, index) in tasks" v-bind:key="index" :task="task" v-bind:sequence="index + 1" />
+        <TaskItem v-for="(task, index) in taskList.items" v-bind:key="index" :task="task" v-bind:sequence="index + 1" />
       </div>
     </div>
   </main>
@@ -18,7 +18,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import Task from './interfaces/Task';
+import Task from '@/entities/Task';
+import List from '@/classes/List';
 
 import SideBar from '@/components/SideBar.vue';
 import FormSection from '@/components/Form.vue';
@@ -34,17 +35,17 @@ export default defineComponent({
     BoxContainer
   },
   data: () => ({
-    tasks: [] as Task[],
+    taskList: new List<Task>(),
     isDarkMode: false,
   }),
   computed: {
     isEmptyTasks() {
-      return this.tasks.length <= 0;
+      return this.taskList.isEmpty;
     },
   },
   methods: {
     saveTask(task: Task) {
-      this.tasks.push(task);
+      this.taskList.add(task);
     },
     switchTheme(darkMode: boolean) {
       this.isDarkMode = darkMode;
