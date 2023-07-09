@@ -5,7 +5,7 @@
         {{ task.description || `Tarefa de N° ${sequence}` }}
       </div>
       <div class="column">
-        <StopWatch v-bind:seconds="task.time" />
+        <StopWatch v-bind:seconds="task.seconds" />
       </div>
     </div>
   </BoxContainer>
@@ -14,7 +14,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 
-import Task from '@/interfaces/Task';
+import Task from '@/entities/Task';
 
 import StopWatch from './StopWatch.vue';
 import BoxContainer from './BoxContainer.vue';
