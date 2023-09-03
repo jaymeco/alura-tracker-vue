@@ -1,12 +1,15 @@
+import Project from '@/interfaces/Project';
 import Model from '../interfaces/Task';
 
 export default class Task {
   public readonly description: string;
   public readonly seconds: number;
+  public readonly project?: Project;
 
   constructor(data: Model) {
     this.description = data.description;
     this.seconds = data.time;
+    this.project = data.project;
   }
 
   get time(): string {

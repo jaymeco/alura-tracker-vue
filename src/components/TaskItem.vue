@@ -1,8 +1,11 @@
 <template>
   <BoxContainer>
     <div class="columns">
-      <div class="column is-7">
+      <div class="column is-4">
         {{ task.description || `Tarefa de N° ${sequence}` }}
+      </div>
+      <div class="column is-3">
+        {{ task.project?.name ?? 'Sem projeto especificado' }}
       </div>
       <div class="column">
         <StopWatch v-bind:seconds="task.seconds" />
