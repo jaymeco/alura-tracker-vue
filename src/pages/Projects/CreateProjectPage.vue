@@ -16,6 +16,7 @@
 </template>
 
 <script lang="ts">
+import { NotificationType } from '@/interfaces/Notification';
 import { defineComponent } from 'vue';
 import Project from '../../interfaces/Project';
 import { useAppStore } from '../../store';
@@ -46,6 +47,11 @@ export default defineComponent({
       }
       this.project.name = '';
       this.$router.push('/projects');
+      this.store.commit('NOTIFICATE', {
+        text: 'Projeto adicionado com sucesso!',
+        title: 'Sucesso!',
+        type: NotificationType.SUCCESS
+      })
     }
   },
   mounted() {
