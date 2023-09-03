@@ -41,8 +41,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import Project from '../interfaces/Project';
+import { computed, defineComponent } from 'vue';
+import { useAppStore } from '../store';
 
 export default defineComponent({
   name: 'ProjectsPage',
@@ -51,18 +51,20 @@ export default defineComponent({
       project: {
         name: ''
       },
-      projects: [] as Project[],
     };
   },
   methods: {
     handleSubmit() {
-      const project: Project = {
-        id: (new Date()).toISOString(),
-        name: this.project.name,
-      };
-
-      this.projects.push(project);
+      this.store.commit('ADD_PROJECT', this.project.name);
       this.project.name = '';
+    }
+  },
+  setup() {
+    const store = useAppStore()
+
+    return {
+      store,
+      projects: computed(() => store.state.projects)
     }
   }
 });
