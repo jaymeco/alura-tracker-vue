@@ -1,7 +1,5 @@
 <template>
-  <section class="projetos">
-    <h1 class="title">Adicionar um projeto</h1>
-
+  <section>
     <form @submit.prevent="handleSubmit">
       <div class="field">
         <label for="name" class="label">Nome do projeto</label>
@@ -19,8 +17,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Project from '../interfaces/Project';
-import { useAppStore } from '../store';
+import Project from '../../interfaces/Project';
+import { useAppStore } from '../../store';
 
 export default defineComponent({
   name: 'CreateProjectPage',
@@ -69,7 +67,4 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.projetos {
-  padding: 1.25rem;
-}
 </style>
