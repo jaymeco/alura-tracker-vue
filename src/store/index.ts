@@ -23,7 +23,7 @@ export const store = createStore<AppState>({
     },
     'EDIT_PROJECT'(state, updatedProject: Project) {
       state.projects = state.projects.map((project) => {
-        if(project.id === updatedProject.id) {
+        if (project.id === updatedProject.id) {
           return {
             ...project,
             name: updatedProject.name,
@@ -33,6 +33,9 @@ export const store = createStore<AppState>({
         return project;
       });
     },
+    'DELETE_PROJECT'(state, projectId: string) {
+      state.projects = state.projects.filter(({ id }) => id !== projectId);
+    }
   }
 });
 
