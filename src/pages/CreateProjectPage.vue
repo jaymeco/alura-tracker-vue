@@ -19,10 +19,16 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import Project from '../interfaces/Project';
 import { useAppStore } from '../store';
 
 export default defineComponent({
   name: 'CreateProjectPage',
+  props: {
+    projectId: {
+      type: String,
+    },
+  },
   data() {
     return {
       project: {
@@ -32,9 +38,23 @@ export default defineComponent({
   },
   methods: {
     handleSubmit() {
-      this.store.commit('ADD_PROJECT', this.project.name);
+      if (this.projectId) {
+        this.store.commit('EDIT_PROJECT', {
+          id: this.projectId,
+          name: this.project.name,
+        });
+      } else {
+        this.store.commit('ADD_PROJECT', this.project.name);
+      }
       this.project.name = '';
       this.$router.push('/projects');
+    }
+  },
+  mounted() {
+    if (this.projectId) {
+      const project: Project | undefined = this.store.state
+        .projects.find(({ id }) => id === this.projectId);
+      this.project.name = project?.name ?? '';
     }
   },
   setup() {
