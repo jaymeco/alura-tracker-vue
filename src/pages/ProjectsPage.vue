@@ -1,19 +1,13 @@
 <template>
   <section class="projetos">
-    <h1 class="title">Projetos poha</h1>
+    <h1 class="title">Meus Projetos</h1>
 
-    <form @submit.prevent="handleSubmit">
-      <div class="field">
-        <label for="name" class="label">Nome do projeto</label>
-        <input type="text" class="input" v-model="project.name" id="project-name">
-      </div>
-
-      <div class="field">
-        <button type="submit" class="button">
-          Salvar
-        </button>
-      </div>
-    </form>
+    <router-link to="/projects/create" class="button">
+      <span class="icon is-small">
+        <i class="fas fa-plus"></i>
+      </span>
+      <span>Novo projeto</span>
+    </router-link>
 
     <table class="table is-full-width mt-2">
       <thead>
@@ -34,6 +28,13 @@
           <td>
             {{ project.name }}
           </td>
+          <td>
+            <router-link :to="`/projects/${project.id}/edit`" class="button">
+              <span class="icon is-small">
+                <i class="fas fa-pencil-alt"></i>
+              </span>
+            </router-link>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -48,22 +49,12 @@ export default defineComponent({
   name: 'ProjectsPage',
   data() {
     return {
-      project: {
-        name: ''
-      },
     };
-  },
-  methods: {
-    handleSubmit() {
-      this.store.commit('ADD_PROJECT', this.project.name);
-      this.project.name = '';
-    }
   },
   setup() {
     const store = useAppStore()
 
     return {
-      store,
       projects: computed(() => store.state.projects)
     }
   }
