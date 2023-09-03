@@ -23,6 +23,7 @@ const routes: RouteRecordRaw[] = [
     path: '/projects/:projectId/edit',
     name: 'Edit-Project',
     component: CreateProjectPage,
+    props: true,
   },
 ];
 

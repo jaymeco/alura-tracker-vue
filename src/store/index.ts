@@ -21,6 +21,18 @@ export const store = createStore<AppState>({
 
       state.projects.push(project);
     },
+    'EDIT_PROJECT'(state, updatedProject: Project) {
+      state.projects = state.projects.map((project) => {
+        if(project.id === updatedProject.id) {
+          return {
+            ...project,
+            name: updatedProject.name,
+          };
+        }
+
+        return project;
+      });
+    },
   }
 });
 
