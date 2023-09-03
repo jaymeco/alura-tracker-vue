@@ -20,7 +20,7 @@ import { NotificationType } from '@/interfaces/Notification';
 import { defineComponent } from 'vue';
 import Project from '../../interfaces/Project';
 import { useAppStore } from '../../store';
-import { notificationyMixin } from '@/mixins/Notification'
+import useNotifier from '@/hooks/useNotifier';
 
 export default defineComponent({
   name: 'CreateProjectPage',
@@ -29,7 +29,6 @@ export default defineComponent({
       type: String,
     },
   },
-  mixins: [notificationyMixin],
   data() {
     return {
       project: {
@@ -49,7 +48,7 @@ export default defineComponent({
       }
       this.project.name = '';
       this.$router.push('/projects');
-      this.notifty(NotificationType.SUCCESS, 'Sucesso!', 'Projeto adicionado com sucesso!');
+      this.notify(NotificationType.SUCCESS, 'Sucesso!', 'Projeto adicionado com sucesso!');
     },
   },
   mounted() {
@@ -60,10 +59,12 @@ export default defineComponent({
     }
   },
   setup() {
-    const store = useAppStore()
+    const store = useAppStore();
+    const { notify } = useNotifier();
 
     return {
       store,
+      notify,
     }
   }
 });
