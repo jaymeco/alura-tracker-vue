@@ -16,9 +16,11 @@
 </template>
 
 <script lang="ts">
+import { NotificationType } from '@/interfaces/Notification';
 import { defineComponent } from 'vue';
 import Project from '../../interfaces/Project';
 import { useAppStore } from '../../store';
+import useNotifier from '@/hooks/useNotifier';
 
 export default defineComponent({
   name: 'CreateProjectPage',
@@ -46,7 +48,8 @@ export default defineComponent({
       }
       this.project.name = '';
       this.$router.push('/projects');
-    }
+      this.notify(NotificationType.SUCCESS, 'Sucesso!', 'Projeto adicionado com sucesso!');
+    },
   },
   mounted() {
     if (this.projectId) {
@@ -56,15 +59,16 @@ export default defineComponent({
     }
   },
   setup() {
-    const store = useAppStore()
+    const store = useAppStore();
+    const { notify } = useNotifier();
 
     return {
       store,
+      notify,
     }
   }
 });
 
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
