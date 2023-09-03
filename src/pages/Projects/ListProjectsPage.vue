@@ -16,6 +16,9 @@
           <th>
             Nome
           </th>
+          <th>
+            Ações
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -32,6 +35,11 @@
                 <i class="fas fa-pencil-alt"></i>
               </span>
             </router-link>
+            <button class="button ml-2 is-danger" @click="deleteProject(project)">
+              <span class="icon is-small">
+                <i class="fas fa-trash"></i>
+              </span>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -41,6 +49,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
+import Project from '../../interfaces/Project';
 import { useAppStore } from '../../store';
 
 export default defineComponent({
@@ -49,10 +58,16 @@ export default defineComponent({
     return {
     };
   },
+  methods: {
+    deleteProject(project: Project) {
+      this.store.commit('DELETE_PROJECT', project.id);
+    }
+  },
   setup() {
     const store = useAppStore()
 
     return {
+      store,
       projects: computed(() => store.state.projects)
     }
   }
@@ -60,5 +75,4 @@ export default defineComponent({
 
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
