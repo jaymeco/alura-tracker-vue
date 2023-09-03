@@ -1,7 +1,8 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 import TaskPage from '../pages/TaskPage.vue';
 import ProjectsPage from '../pages/ProjectsPage.vue';
-import CreateProjectPage from '../pages/CreateProjectPage.vue';
+import CreateProjectPage from '../pages/Projects/CreateProjectPage.vue';
+import ListProjectPage from '../pages/Projects/ListProjectsPage.vue';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -11,19 +12,25 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/projects',
-    name: 'Projects',
     component: ProjectsPage,
-  },
-  {
-    path: '/projects/create',
-    name: 'Create-Project',
-    component: CreateProjectPage,
-  },
-  {
-    path: '/projects/:projectId/edit',
-    name: 'Edit-Project',
-    component: CreateProjectPage,
-    props: true,
+    children: [
+      {
+        path: '',
+        name: 'Lsi-Projects',
+        component: ListProjectPage,
+      },
+      {
+        path: 'create',
+        name: 'Create-Project',
+        component: CreateProjectPage,
+      },
+      {
+        path: ':projectId/edit',
+        name: 'Edit-Project',
+        component: CreateProjectPage,
+        props: true,
+      },
+    ],
   },
 ];
 
