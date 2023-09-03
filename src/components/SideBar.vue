@@ -13,7 +13,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="Projects">
+          <router-link to="/projects">
             <i class="fas fa-project-diagram"></i>
             Projetos
           </router-link>
