@@ -59,7 +59,12 @@ export const store = createStore<AppState>({
     'GET_PROJECTS'({ commit }) {
       httpClient.get('/projects')
         .then(({ data }) => commit('DEFINE_PROJECTS', data));
-    }
+    },
+    'CREATE_PROJECT'(context, name: string) {
+      return httpClient.post('/projects', {
+        name,
+      });
+    },
   }
 });
 
