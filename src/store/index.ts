@@ -1,51 +1,29 @@
 import Task from "@/entities/Task";
-import Notification, { NotificationType } from "@/interfaces/Notification";
-import Project from "@/interfaces/Project";
-import httpClient from "@/services/clients/axios";
+import Notification from "@/interfaces/Notification";
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore } from 'vuex';
+import { project, ProjectState } from "./modules/project";
+import { task, TaskState } from "./modules/task";
 
-interface AppState {
-  projects: Project[];
+export interface AppState {
   notifications: Notification[];
-  tasks: Task[];
+  project: ProjectState,
+  task: TaskState,
 }
 
 export const key: InjectionKey<Store<AppState>> = Symbol();
 
 export const store = createStore<AppState>({
   state: {
-    projects: [],
     notifications: [],
-    tasks: [],
+    project: {
+      projects: [],
+    },
+    task: {
+      tasks: [],
+    }
   },
   mutations: {
-    'ADD_PROJECT'(state, name: string) {
-      const project: Project = {
-        id: (new Date()).toISOString(),
-        name,
-      };
-
-      state.projects.push(project);
-    },
-    'EDIT_PROJECT'(state, updatedProject: Project) {
-      state.projects = state.projects.map((project) => {
-        if (project.id === updatedProject.id) {
-          return {
-            ...project,
-            name: updatedProject.name,
-          };
-        }
-
-        return project;
-      });
-    },
-    'DELETE_PROJECT'(state, projectId: string) {
-      state.projects = state.projects.filter(({ id }) => id !== projectId);
-    },
-    'DEFINE_PROJECTS'(state, projects: Project[]) {
-      state.projects = projects;
-    },
     'NOTIFICATE'(state, newNotification: Notification) {
       newNotification = {
         ...newNotification,
@@ -57,46 +35,11 @@ export const store = createStore<AppState>({
         state.notifications = state.notifications.filter(({ id }) => id !== newNotification.id)
       }, 2000);
     },
-    'DEFINE_TASKS'(state, tasks: Task[]) {
-      state.tasks = tasks;
-    },
-    'ADD_TASK'(state, task: Task) {
-      state.tasks.push(task);
-    },
-    'EDIT_TASK'(state, updatedTask: Task) {
-      const index = state.tasks.findIndex((task) => task.id === updatedTask.id);
-      state.tasks[index] = updatedTask;
-    },
   },
-  actions: {
-    'GET_PROJECTS'({ commit }) {
-      httpClient.get('/projects')
-        .then(({ data }) => commit('DEFINE_PROJECTS', data));
-    },
-    'CREATE_PROJECT'(context, name: string) {
-      return httpClient.post('/projects', {
-        name,
-      });
-    },
-    'UPDATE_PROJECT'(context, project: Project) {
-      return httpClient.put(`/projects/${project.id}`, project);
-    },
-    'DELETE_PROJECT'(context, id: string) {
-      return httpClient.delete(`/projects/${id}`);
-    },
-    'GET_TASKS'({ commit }) {
-      httpClient.get('/tasks')
-        .then(({ data }) => commit('DEFINE_TASKS', data.map((response: any) => new Task(response))))
-    },
-    'CREATE_TASK'({ commit }, task: Task) {
-      httpClient.post('/tasks', task.toJson())
-        .then(({ data }) => commit('ADD_TASK', new Task(data)));
-    },
-    'UPDATE_TASK'({ commit }, task: Task) {
-      httpClient.put(`/tasks/${task.id}`, task.toJson())
-        .then(({ data }) => commit('EDIT_TASK', new Task(data)));
-    }
-  }
+  modules: {
+    project,
+    task,
+  },
 });
 
 export function useAppStore(): Store<AppState> {
