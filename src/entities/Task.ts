@@ -18,4 +18,11 @@ export default class Task {
     return timestamp.toISOString()
       .substr(11, 8);
   }
+
+  public toJson(): Model {
+    return {
+      ...this,
+      time: this.seconds,
+    } as Model;
+  }
 }
