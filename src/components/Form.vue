@@ -45,6 +45,7 @@ export default defineComponent({
   methods: {
     finishTask(time: number): void {
       const task: Task = {
+        id: 0,
         time,
         description: this.description,
         project: this.selectedProject,
