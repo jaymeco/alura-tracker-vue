@@ -1,3 +1,4 @@
+import Task from "@/entities/Task";
 import Notification, { NotificationType } from "@/interfaces/Notification";
 import Project from "@/interfaces/Project";
 import httpClient from "@/services/clients/axios";
@@ -7,6 +8,7 @@ import { createStore, Store, useStore } from 'vuex';
 interface AppState {
   projects: Project[];
   notifications: Notification[];
+  tasks: Task[];
 }
 
 export const key: InjectionKey<Store<AppState>> = Symbol();
@@ -15,6 +17,7 @@ export const store = createStore<AppState>({
   state: {
     projects: [],
     notifications: [],
+    tasks: [],
   },
   mutations: {
     'ADD_PROJECT'(state, name: string) {
@@ -54,6 +57,9 @@ export const store = createStore<AppState>({
         state.notifications = state.notifications.filter(({ id }) => id !== newNotification.id)
       }, 2000);
     },
+    'DEFINE_TASKS'(state, tasks: Task[]) {
+      state.tasks = tasks;
+    }
   },
   actions: {
     'GET_PROJECTS'({ commit }) {
@@ -71,6 +77,10 @@ export const store = createStore<AppState>({
     'DELETE_PROJECT'(context, id: string) {
       return httpClient.delete(`/projects/${id}`);
     },
+    'GET_TASKS'({ commit }) {
+      httpClient.get('/tasks')
+        .then(({ data }) => commit('DEFINE_TASKS', data.map((response: any) => new Task(response))))
+    }
   }
 });
 
