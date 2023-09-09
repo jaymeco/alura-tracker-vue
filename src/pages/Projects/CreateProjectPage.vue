@@ -39,10 +39,10 @@ export default defineComponent({
   methods: {
     handleSubmit() {
       if (this.projectId) {
-        this.store.commit('EDIT_PROJECT', {
+        this.store.dispatch('UPDATE_PROJECT', {
           id: this.projectId,
           name: this.project.name,
-        });
+        }).then(() => this.feedbackAction('Projeto atualizado com sucesso'));
       } else {
         this.store.dispatch('CREATE_PROJECT', this.project.name)
           .then(() => this.feedbackAction('Projeto cadastrado com sucesso'));
