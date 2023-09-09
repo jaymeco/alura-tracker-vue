@@ -4,12 +4,12 @@
     <BoxContainer v-if="isEmptyTasks">
       Você não possui nenhuma produção hoje :(
     </BoxContainer>
-    <TaskItem v-for="(task, index) in taskList.items" v-bind:key="index" :task="task" v-bind:sequence="index + 1" />
+    <TaskItem v-for="(task, index) in tasks" v-bind:key="index" :task="task" v-bind:sequence="index + 1" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 
 import Task from '../entities/Task';
 import List from '../classes/List';
@@ -17,6 +17,7 @@ import List from '../classes/List';
 import FormSection from '../components/Form.vue';
 import TaskItem from '../components/TaskItem.vue';
 import BoxContainer from '../components/BoxContainer.vue';
+import { useAppStore } from '@/store';
 
 export default defineComponent({
   name: 'TaskPage',
@@ -26,22 +27,30 @@ export default defineComponent({
     BoxContainer
   },
   data: () => ({
-    taskList: new List<Task>(),
     isDarkMode: false,
   }),
   computed: {
     isEmptyTasks() {
-      return this.taskList.isEmpty;
+      return this.tasks.length === 0;
     },
   },
   methods: {
     saveTask(task: Task) {
-      this.taskList.add(task);
+      // this.tasks.push(task);
     },
     switchTheme(darkMode: boolean) {
       this.isDarkMode = darkMode;
     }
   },
+  setup() {
+    const store = useAppStore();
+    store.dispatch('GET_TASKS');
+
+    return {
+      store,
+      tasks: computed(() => store.state.tasks),
+    };
+  }
 });
 </script>
 
