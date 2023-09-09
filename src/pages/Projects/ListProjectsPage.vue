@@ -65,6 +65,7 @@ export default defineComponent({
   },
   setup() {
     const store = useAppStore()
+    store.dispatch('GET_PROJECTS');
 
     return {
       store,
