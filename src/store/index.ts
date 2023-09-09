@@ -63,6 +63,10 @@ export const store = createStore<AppState>({
     'ADD_TASK'(state, task: Task) {
       state.tasks.push(task);
     },
+    'EDIT_TASK'(state, updatedTask: Task) {
+      const index = state.tasks.findIndex((task) => task.id === updatedTask.id);
+      state.tasks[index] = updatedTask;
+    },
   },
   actions: {
     'GET_PROJECTS'({ commit }) {
@@ -85,9 +89,12 @@ export const store = createStore<AppState>({
         .then(({ data }) => commit('DEFINE_TASKS', data.map((response: any) => new Task(response))))
     },
     'CREATE_TASK'({ commit }, task: Task) {
-      console.log(task.project);
       httpClient.post('/tasks', task.toJson())
         .then(({ data }) => commit('ADD_TASK', new Task(data)));
+    },
+    'UPDATE_TASK'({ commit }, task: Task) {
+      httpClient.put(`/tasks/${task.id}`, task.toJson())
+        .then(({ data }) => commit('EDIT_TASK', new Task(data)));
     }
   }
 });

@@ -5,11 +5,13 @@ export default class Task {
   public readonly description: string;
   public readonly seconds: number;
   public readonly project?: Project;
+  public readonly id: number;
 
   constructor(data: Model) {
     this.description = data.description;
     this.seconds = data.time;
     this.project = data.project;
+    this.id = data.id;
   }
 
   get time(): string {

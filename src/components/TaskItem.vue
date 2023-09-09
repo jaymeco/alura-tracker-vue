@@ -1,5 +1,5 @@
 <template>
-  <BoxContainer>
+  <BoxContainer :onclick="selectTask" class="clickable">
     <div class="columns">
       <div class="column is-4">
         {{ task.description || `Tarefa de N° ${sequence}` }}
@@ -24,6 +24,7 @@ import BoxContainer from './BoxContainer.vue';
 
 export default defineComponent({
   name: 'TaskItem',
+  emits: ['onClick'],
   components: {
     StopWatch,
     BoxContainer
@@ -38,7 +39,16 @@ export default defineComponent({
       required: true,
     },
   },
+  methods: {
+    selectTask() {
+      this.$emit('onClick', this.task);
+    }
+  },
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.clickable:hover {
+  cursor: pointer;
+}
+</style>
