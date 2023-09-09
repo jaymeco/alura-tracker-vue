@@ -36,7 +36,7 @@ export default defineComponent({
   },
   methods: {
     saveTask(task: Task) {
-      // this.tasks.push(task);
+      this.store.dispatch('CREATE_TASK', task);
     },
     switchTheme(darkMode: boolean) {
       this.isDarkMode = darkMode;
