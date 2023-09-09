@@ -60,7 +60,8 @@ export default defineComponent({
   },
   methods: {
     deleteProject(project: Project) {
-      this.store.commit('DELETE_PROJECT', project.id);
+      this.store.dispatch('DELETE_PROJECT', project.id)
+        .then(() => this.store.dispatch('GET_PROJECTS'));
     }
   },
   setup() {
