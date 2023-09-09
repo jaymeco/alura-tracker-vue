@@ -1,5 +1,6 @@
 import Notification, { NotificationType } from "@/interfaces/Notification";
 import Project from "@/interfaces/Project";
+import httpClient from "@/services/clients/axios";
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore } from 'vuex';
 
@@ -39,6 +40,9 @@ export const store = createStore<AppState>({
     'DELETE_PROJECT'(state, projectId: string) {
       state.projects = state.projects.filter(({ id }) => id !== projectId);
     },
+    'DEFINE_PROJECTS'(state, projects: Project[]) {
+      state.projects = projects;
+    },
     'NOTIFICATE'(state, newNotification: Notification) {
       newNotification = {
         ...newNotification,
@@ -49,6 +53,23 @@ export const store = createStore<AppState>({
       setTimeout(() => {
         state.notifications = state.notifications.filter(({ id }) => id !== newNotification.id)
       }, 2000);
+    },
+  },
+  actions: {
+    'GET_PROJECTS'({ commit }) {
+      httpClient.get('/projects')
+        .then(({ data }) => commit('DEFINE_PROJECTS', data));
+    },
+    'CREATE_PROJECT'(context, name: string) {
+      return httpClient.post('/projects', {
+        name,
+      });
+    },
+    'UPDATE_PROJECT'(context, project: Project) {
+      return httpClient.put(`/projects/${project.id}`, project);
+    },
+    'DELETE_PROJECT'(context, id: string) {
+      return httpClient.delete(`/projects/${id}`);
     },
   }
 });
