@@ -65,6 +65,9 @@ export const store = createStore<AppState>({
         name,
       });
     },
+    'UPDATE_PROJECT'(context, project: Project) {
+      return httpClient.put(`/projects/${project.id}`, project);
+    }
   }
 });
 
