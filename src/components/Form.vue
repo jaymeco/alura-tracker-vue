@@ -30,6 +30,7 @@ import { key } from '@/store';
 
 import TimerItem from './Timer.vue';
 import Project from '@/interfaces/Project';
+import TaskEntity from '@/entities/Task';
 
 export default defineComponent({
   name: 'FormSection',
@@ -48,12 +49,13 @@ export default defineComponent({
         description: this.description,
         project: this.selectedProject,
       };
-      this.$emit('onSubmit', task);
+      this.$emit('onSubmit', new TaskEntity(task));
       this.description = '';
     }
   },
   setup() {
     const store = useStore(key);
+    store.dispatch('GET_PROJECTS');
 
     return {
       projects: computed(() => store.state.projects),
