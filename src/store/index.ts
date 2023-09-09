@@ -59,7 +59,10 @@ export const store = createStore<AppState>({
     },
     'DEFINE_TASKS'(state, tasks: Task[]) {
       state.tasks = tasks;
-    }
+    },
+    'ADD_TASK'(state, task: Task) {
+      state.tasks.push(task);
+    },
   },
   actions: {
     'GET_PROJECTS'({ commit }) {
@@ -80,6 +83,11 @@ export const store = createStore<AppState>({
     'GET_TASKS'({ commit }) {
       httpClient.get('/tasks')
         .then(({ data }) => commit('DEFINE_TASKS', data.map((response: any) => new Task(response))))
+    },
+    'CREATE_TASK'({ commit }, task: Task) {
+      console.log(task.project);
+      httpClient.post('/tasks', task.toJson())
+        .then(({ data }) => commit('ADD_TASK', new Task(data)));
     }
   }
 });
