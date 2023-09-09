@@ -44,12 +44,15 @@ export default defineComponent({
           name: this.project.name,
         });
       } else {
-        this.store.commit('ADD_PROJECT', this.project.name);
+        this.store.dispatch('CREATE_PROJECT', this.project.name)
+          .then(() => this.feedbackAction('Projeto cadastrado com sucesso'));
       }
+    },
+    feedbackAction(message: string) {
       this.project.name = '';
       this.$router.push('/projects');
-      this.notify(NotificationType.SUCCESS, 'Sucesso!', 'Projeto adicionado com sucesso!');
-    },
+      this.notify(NotificationType.SUCCESS, 'Sucesso!', message);
+    }
   },
   mounted() {
     if (this.projectId) {
