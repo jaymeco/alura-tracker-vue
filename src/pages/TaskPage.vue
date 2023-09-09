@@ -52,6 +52,7 @@ export default defineComponent({
   }),
   computed: {
     isEmptyTasks() {
+      console.log(this.tasks)
       return this.tasks.length === 0;
     },
   },
@@ -76,10 +77,10 @@ export default defineComponent({
   setup() {
     const store = useAppStore();
     store.dispatch('GET_TASKS');
-
+    console.log('Eureca', store.state.task)
     return {
       store,
-      tasks: computed(() => store.state.tasks),
+      tasks: computed(() => store.state.task.tasks),
     };
   }
 });

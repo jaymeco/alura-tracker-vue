@@ -57,7 +57,7 @@ export default defineComponent({
   mounted() {
     if (this.projectId) {
       const project: Project | undefined = this.store.state
-        .projects.find(({ id }) => id === this.projectId);
+        .project.projects.find(({ id }) => id === this.projectId);
       this.project.name = project?.name ?? '';
     }
   },
