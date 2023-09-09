@@ -67,7 +67,10 @@ export const store = createStore<AppState>({
     },
     'UPDATE_PROJECT'(context, project: Project) {
       return httpClient.put(`/projects/${project.id}`, project);
-    }
+    },
+    'DELETE_PROJECT'(context, id: string) {
+      return httpClient.delete(`/projects/${id}`);
+    },
   }
 });
 
