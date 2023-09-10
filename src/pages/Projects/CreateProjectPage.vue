@@ -17,10 +17,11 @@
 
 <script lang="ts">
 import { NotificationType } from '@/interfaces/Notification';
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import Project from '../../interfaces/Project';
 import { useAppStore } from '../../store';
 import useNotifier from '@/hooks/useNotifier';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'CreateProjectPage',
@@ -29,45 +30,41 @@ export default defineComponent({
       type: String,
     },
   },
-  data() {
-    return {
-      project: {
-        name: ''
-      },
-    };
-  },
-  methods: {
-    handleSubmit() {
-      if (this.projectId) {
-        this.store.dispatch('UPDATE_PROJECT', {
-          id: this.projectId,
-          name: this.project.name,
-        }).then(() => this.feedbackAction('Projeto atualizado com sucesso'));
-      } else {
-        this.store.dispatch('CREATE_PROJECT', this.project.name)
-          .then(() => this.feedbackAction('Projeto cadastrado com sucesso'));
-      }
-    },
-    feedbackAction(message: string) {
-      this.project.name = '';
-      this.$router.push('/projects');
-      this.notify(NotificationType.SUCCESS, 'Sucesso!', message);
-    }
-  },
-  mounted() {
-    if (this.projectId) {
-      const project: Project | undefined = this.store.state
-        .project.projects.find(({ id }) => id === this.projectId);
-      this.project.name = project?.name ?? '';
-    }
-  },
-  setup() {
+  setup(props) {
     const store = useAppStore();
     const { notify } = useNotifier();
+    const router = useRouter();
+
+    const project = ref({ name: '' });
+
+    if (props.projectId) {
+      const foundProject: Project | undefined = store.state
+        .project.projects.find(({ id }) => id === props.projectId);
+
+      project.value.name = foundProject?.name ?? '';
+    }
+
+    function feedbackAction(message: string) {
+      project.value.name = '';
+      router.push('/projects');
+      notify(NotificationType.SUCCESS, 'Sucesso!', message);
+    }
+
+    function handleSubmit() {
+      if (props.projectId) {
+        store.dispatch('UPDATE_PROJECT', {
+          id: props.projectId,
+          name: project.value.name,
+        }).then(() => feedbackAction('Projeto atualizado com sucesso'));
+      } else {
+        store.dispatch('CREATE_PROJECT', project.value.name)
+          .then(() => feedbackAction('Projeto cadastrado com sucesso'));
+      }
+    }
 
     return {
-      store,
-      notify,
+      project,
+      handleSubmit,
     }
   }
 });

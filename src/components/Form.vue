@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
 
 import Task from '@/interfaces/Task';
@@ -38,27 +38,29 @@ export default defineComponent({
     TimerItem,
   },
   emits: ['onSubmit'],
-  data: () => ({
-    description: '',
-    selectedProject: { } as Project,
-  }),
-  methods: {
-    finishTask(time: number): void {
-      const task: Task = {
-        id: 0,
-        time,
-        description: this.description,
-        project: this.selectedProject,
-      };
-      this.$emit('onSubmit', new TaskEntity(task));
-      this.description = '';
-    }
-  },
-  setup() {
+  setup(_, { emit }) {
     const store = useStore(key);
+    const description = ref("");
+    const selectedProject = ref<Project | null>(null);
     store.dispatch('GET_PROJECTS');
 
+    function finishTask(time: number) {
+      if(selectedProject.value) {
+        const task: Task = {
+          id: 0,
+          time,
+          description: description.value,
+          project: selectedProject.value,
+        };
+        emit('onSubmit', new TaskEntity(task));
+        description.value = '';
+      }
+    }
+
     return {
+      description,
+      selectedProject,
+      finishTask,
       projects: computed(() => store.state.project.projects),
     };
   }
