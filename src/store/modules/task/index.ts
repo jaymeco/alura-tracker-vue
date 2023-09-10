@@ -21,8 +21,14 @@ export const task: Module<TaskState, AppState> = {
     },
   },
   actions: {
-    'GET_TASKS'({ commit }) {
-      httpClient.get('/tasks')
+    'GET_TASKS'({ commit }, filter?: string) {
+      let url = '/tasks';
+
+      if (filter) {
+        url = `${url}?description=${filter}`;
+      }
+
+      httpClient.get(url)
         .then(({ data }) => commit('DEFINE_TASKS', data.map((response: any) => new Task(response))))
     },
     'CREATE_TASK'({ commit }, task: Task) {

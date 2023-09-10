@@ -1,6 +1,12 @@
 <template>
   <FormSection @on-submit="saveTask" />
   <div class="taks-list">
+    <div class="control has-icons-left has-icons-right mb-5">
+      <input class="input is-small" type="text" placeholder="Digite para filtrar as tarefas" v-model="filterValue">
+      <span class="icon is-small is-left">
+        <i class="fas fa-search"></i>
+      </span>
+    </div>
     <BoxContainer v-if="isEmptyTasks">
       Você não possui nenhuma produção hoje :(
     </BoxContainer>
@@ -29,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, ref, watchEffect } from 'vue';
 
 import Task from '../entities/Task';
 import List from '../classes/List';
@@ -70,14 +76,22 @@ export default defineComponent({
     },
     updateTask() {
       this.store.dispatch('UPDATE_TASK', this.selectedTask)
-      .then(() => this.unSelectTask());
+        .then(() => this.unSelectTask());
     }
   },
   setup() {
     const store = useAppStore();
     store.dispatch('GET_TASKS');
+
+    const filterValue = ref('');
+
+    watchEffect(() => {
+      store.dispatch('GET_TASKS', filterValue.value);
+    });
+
     return {
       store,
+      filterValue,
       tasks: computed(() => store.state.task.tasks),
     };
   }
